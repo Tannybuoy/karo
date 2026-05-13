@@ -25,8 +25,8 @@
 
     .slide {
       position: absolute; inset: 0;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 48px 10%;
+      display: flex; flex-direction: column; justify-content: flex-start;
+      padding: 56px 10% 24px;
       opacity: 0; pointer-events: none;
       transition: opacity 0.4s ease;
       overflow: hidden;
@@ -214,17 +214,22 @@
   <!-- ── SLIDE 4: Persona ── -->
   <div class="slide" id="slide-3">
     <div class="label">Who we're building for</div>
-    <h2 class="heading" style="font-size: clamp(2rem, 3vw, 3rem);">Meet Maya.</h2>
-    <div class="persona">
-      <div class="persona-name">Maya, 28</div>
-      <div class="persona-role">Freelance designer · Brooklyn, NY</div>
-      <ul>
-        <li>Works from home 5 days a week. Loves it and hates it in equal measure.</li>
-        <li>Has a gym membership, a morning routine, a full calendar — and hasn't had a spontaneous human interaction at work in 8 months.</li>
-        <li>Tried coworking spaces — too expensive, still felt alone in a room of strangers.</li>
-        <li>Would love to meet someone to work alongside but has no natural way to find them.</li>
-        <li>Doesn't want networking. Doesn't want small talk. Just wants to sit across from someone and get things done.</li>
-      </ul>
+    <h2 class="heading" style="font-size: clamp(2rem, 3vw, 3rem); margin-bottom: 20px;">Meet Maya.</h2>
+    <div style="display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap;">
+      <div class="persona" style="margin-top: 0; flex: 1; min-width: 280px;">
+        <div class="persona-name">Maya, 28</div>
+        <div class="persona-role">Freelance designer · Brooklyn, NY</div>
+        <ul>
+          <li>Works from home 5 days a week. Loves it and hates it in equal measure.</li>
+          <li>Has a gym membership, a morning routine, a full calendar — and hasn't had a spontaneous human interaction at work in 8 months.</li>
+          <li>Tried coworking spaces — too expensive, still felt alone in a room of strangers.</li>
+          <li>Would love to meet someone to work alongside but has no natural way to find them.</li>
+          <li>Doesn't want networking. Doesn't want small talk. Just wants to sit across from someone and get things done.</li>
+        </ul>
+      </div>
+      <div style="flex-shrink: 0; width: 220px;">
+        <img src="../alex-working.png" alt="Woman working at a café" style="width: 100%; height: 280px; object-fit: cover; object-position: top; border-radius: 8px; border: 1px solid var(--border);" />
+      </div>
     </div>
   </div>
 
@@ -468,6 +473,42 @@
         <div class="bar-row"><div class="bar-label">Month 5</div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><div class="bar-val">780</div></div>
         <div class="bar-row"><div class="bar-label">Month 6</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">1,000</div></div>
         <p style="font-size:11px; color:var(--muted); margin-top:12px;">Then: London and Toronto.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 12: Resources ── -->
+  <div class="slide" id="slide-11">
+    <div class="label">Links &amp; resources</div>
+    <h2 class="heading" style="font-size: clamp(1.8rem, 2.8vw, 2.8rem); margin-bottom: 32px;">Further reading.</h2>
+    <div style="display: flex; gap: 48px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 260px;">
+        <div class="chart-title" style="margin-bottom: 14px;">Research &amp; data</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="https://buffer.com/state-of-remote-work" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Buffer — State of Remote Work 2024 →</a>
+          <a href="https://hbr.org/2017/09/work-and-the-loneliness-epidemic" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">HBR — Work and the Loneliness Epidemic →</a>
+          <a href="https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2770146" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">JAMA — Loneliness and Social Isolation as Risk Factors →</a>
+          <a href="https://adhd.additudemag.com/body-doubling-adhd-focus/" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">ADDitude — Body Doubling for Focus →</a>
+          <a href="https://www.gallup.com/workplace/336274/remote-work-lonely.aspx" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none;">Gallup — Remote Work Is Working, But It Has Its Downsides →</a>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 260px;">
+        <div class="chart-title" style="margin-bottom: 14px;">Comparable products</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="https://www.focusmate.com" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Focusmate — Virtual co-working →</a>
+          <a href="https://www.flowclub.com" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Flow Club — Online work sessions →</a>
+          <a href="https://www.industriousoffice.com" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Industrious — Premium coworking →</a>
+          <a href="https://bumble.com/bff" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Bumble BFF — Friend matching →</a>
+          <a href="https://www.meetup.com" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none;">Meetup — Group gatherings →</a>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 220px;">
+        <div class="chart-title" style="margin-bottom: 14px;">The product</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="https://karo.tanya.company" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">karo.tanya.company — Live app →</a>
+          <a href="https://github.com/Tannybuoy/karo" target="_blank" style="font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 10px;">GitHub — Source code →</a>
+          <a href="mailto:mjtanyagupta@gmail.com" style="font-size: 14px; color: var(--accent); text-decoration: none;">Contact — mjtanyagupta@gmail.com →</a>
+        </div>
       </div>
     </div>
   </div>

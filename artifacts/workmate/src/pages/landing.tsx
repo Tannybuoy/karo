@@ -111,7 +111,47 @@ function BottomBar({ onSignIn, onJoin }: { onSignIn: () => void; onJoin: () => v
 }
 
 /* ─── Section text content definitions ─── */
-function HeroText({ submitted, email, setEmail, onSubmit }: { submitted: boolean; email: string; setEmail: (v: string) => void; onSubmit: (e: React.FormEvent) => void }) {
+function MatchPhoneMockup() {
+  const base = import.meta.env.BASE_URL;
+  return (
+    <div style={{ display: "flex", justifyContent: "center", marginTop: "48px" }}>
+      <div
+        style={{
+          width: "200px",
+          height: "400px",
+          borderRadius: "32px",
+          background: "#1a1a1a",
+          padding: "8px",
+          boxShadow: "0 32px 64px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.06) inset",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: "12px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "64px",
+            height: "18px",
+            background: "#1a1a1a",
+            borderRadius: "10px",
+            zIndex: 10,
+          }}
+        />
+        <div style={{ width: "100%", height: "100%", borderRadius: "26px", overflow: "hidden" }}>
+          <img
+            src={`${base}screenshots/screen-match.jpg`}
+            alt="You've been matched"
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", borderRadius: "26px" }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeroText({ submitted, email, setEmail, onSubmit, showPhone }: { submitted: boolean; email: string; setEmail: (v: string) => void; onSubmit: (e: React.FormEvent) => void; showPhone?: boolean }) {
   return (
     <div style={{ maxWidth: "680px" }}>
       <p style={{ fontSize: "clamp(3.6rem, 6vw, 6rem)", fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.02em", fontFamily: S.fontDisplay, margin: "0 0 30px" }}>
@@ -143,6 +183,7 @@ function HeroText({ submitted, email, setEmail, onSubmit }: { submitted: boolean
           <p style={{ margin: "4px 0 0", fontSize: "13px", color: S.muted }}>We'll reach out when New York opens.</p>
         </div>
       )}
+      {showPhone && <MatchPhoneMockup />}
     </div>
   );
 }
@@ -260,7 +301,7 @@ export default function Landing() {
               }}
             >
               {i === 0 ? (
-                <HeroText submitted={submitted} email={email} setEmail={setEmail} onSubmit={handleSubmit} />
+                <HeroText submitted={submitted} email={email} setEmail={setEmail} onSubmit={handleSubmit} showPhone />
               ) : i === 4 ? (
                 /* Brand finale — just "karo" huge */
                 (<p style={{ fontSize: "clamp(5rem, 20vw, 9rem)", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-0.04em", fontFamily: S.fontDisplay, margin: 0 }}>karo
