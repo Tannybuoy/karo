@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm install && pnpm --filter @workspace/workmate run build",
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm --filter @workspace/workmate run build",
   "outputDirectory": "artifacts/workmate/dist/public",
   "installCommand": "npm install -g pnpm"
 }
