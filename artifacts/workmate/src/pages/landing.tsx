@@ -121,7 +121,7 @@ function HeroText({ submitted, email, setEmail, onSubmit }: { submitted: boolean
       </p>
       <p
         style={{ fontSize: "22px", color: S.muted, lineHeight: 1.6, margin: "0 0 48px", maxWidth: "510px" }}
-        className="text-[#4f4f4f] border-t-[#888888] border-r-[#888888] border-b-[#888888] border-l-[#888888]">Work in your neighbourhood, with someone who works like you. Scroll to see more, meanwhile sign up for the waitlist.</p>
+        className="text-[#4f4f4f] border-t-[#888888] border-r-[#888888] border-b-[#888888] border-l-[#888888]">Work in your neighbourhood, with someone who works like you. Sign up for the waitlist.</p>
       {!submitted ? (
         <form onSubmit={onSubmit} style={{ display: "flex", gap: "14px", flexWrap: "wrap", maxWidth: "560px" }}>
           <input
