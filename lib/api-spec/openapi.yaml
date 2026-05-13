@@ -1,0 +1,368 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: WorkMate API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: profiles
+    description: User profile operations
+  - name: chat
+    description: Match chat operations
+  - name: matches
+    description: Match operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /profiles/me:
+    get:
+      operationId: getMyProfile
+      tags: [profiles]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Profile found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "404":
+          description: Profile not found
+    put:
+      operationId: upsertProfile
+      tags: [profiles]
+      summary: Create or update profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertProfileInput"
+      responses:
+        "200":
+          description: Profile saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /matches/current:
+    get:
+      operationId: getCurrentMatch
+      tags: [matches]
+      summary: Get current week's match
+      responses:
+        "200":
+          description: Match found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Match"
+        "404":
+          description: No match this week
+
+  /chat/{matchId}/messages:
+    get:
+      operationId: getChatMessages
+      tags: [chat]
+      summary: Get messages for a match chat
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Messages list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+        "403":
+          description: Chat not available yet
+    post:
+      operationId: sendChatMessage
+      tags: [chat]
+      summary: Send a message in match chat
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageInput"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessage"
+        "403":
+          description: Chat not available
+
+  /chat/{matchId}/cafes:
+    get:
+      operationId: getSuggestedCafes
+      tags: [chat]
+      summary: Get suggested cafés for a match
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Suggested cafés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CafeSuggestion"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    WorkingStyle:
+      type: string
+      enum:
+        - quiet
+        - light_chat
+        - brief_social
+
+    WorkIntent:
+      type: string
+      enum:
+        - deep_work
+        - studying
+        - job_search
+        - side_projects
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        photoUrl:
+          type: string
+          nullable: true
+        workingStyle:
+          $ref: "#/components/schemas/WorkingStyle"
+        preferredNeighborhoods:
+          type: array
+          items:
+            type: string
+        maxTravelMinutes:
+          type: integer
+          enum: [10, 20, 30]
+        workIntents:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkIntent"
+        linkedinUrl:
+          type: string
+          nullable: true
+        instagramUrl:
+          type: string
+          nullable: true
+        hidesSocialLinks:
+          type: boolean
+        showsOnlyToMatches:
+          type: boolean
+        reliabilityScore:
+          type: number
+        checkInCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - name
+        - workingStyle
+        - preferredNeighborhoods
+        - maxTravelMinutes
+        - workIntents
+        - hidesSocialLinks
+        - showsOnlyToMatches
+        - reliabilityScore
+        - checkInCount
+        - createdAt
+        - updatedAt
+
+    UpsertProfileInput:
+      type: object
+      properties:
+        name:
+          type: string
+        photoUrl:
+          type: string
+          nullable: true
+        workingStyle:
+          $ref: "#/components/schemas/WorkingStyle"
+        preferredNeighborhoods:
+          type: array
+          items:
+            type: string
+        maxTravelMinutes:
+          type: integer
+          enum: [10, 20, 30]
+        workIntents:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkIntent"
+        linkedinUrl:
+          type: string
+          nullable: true
+        instagramUrl:
+          type: string
+          nullable: true
+        hidesSocialLinks:
+          type: boolean
+        showsOnlyToMatches:
+          type: boolean
+      required:
+        - name
+        - workingStyle
+        - preferredNeighborhoods
+        - maxTravelMinutes
+        - workIntents
+        - hidesSocialLinks
+        - showsOnlyToMatches
+
+    Match:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        matchedUserId:
+          type: string
+        matchedUserProfile:
+          $ref: "#/components/schemas/UserProfile"
+        sessionTimeSlot:
+          type: string
+        sessionDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [pending, confirmed, completed, cancelled]
+        weekRevealedAt:
+          type: string
+          format: date-time
+        chatEnabled:
+          type: boolean
+      required:
+        - id
+        - userId
+        - matchedUserId
+        - matchedUserProfile
+        - sessionTimeSlot
+        - sessionDate
+        - status
+        - weekRevealedAt
+        - chatEnabled
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        matchId:
+          type: string
+        senderId:
+          type: string
+        senderName:
+          type: string
+        content:
+          type: string
+        sentAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - matchId
+        - senderId
+        - senderName
+        - content
+        - sentAt
+
+    SendMessageInput:
+      type: object
+      properties:
+        content:
+          type: string
+        senderId:
+          type: string
+        senderName:
+          type: string
+      required:
+        - content
+        - senderId
+        - senderName
+
+    CafeSuggestion:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        neighborhood:
+          type: string
+        address:
+          type: string
+        distance:
+          type: string
+        vibe:
+          type: string
+      required:
+        - id
+        - name
+        - neighborhood
+        - address
+        - distance
+        - vibe

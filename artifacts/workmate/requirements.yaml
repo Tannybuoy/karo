@@ -1,0 +1,19 @@
+packages:
+  "framer-motion": "For smooth layout transitions and interactions"
+  "date-fns": "For formatting session times and dates"
+  "react-hook-form": "For robust profile form state management"
+  "@hookform/resolvers": "For Zod validation integration"
+  "clsx": "For conditional class names"
+  "tailwind-merge": "For merging tailwind classes safely"
+
+images:
+  - path: "artifacts/workmate/public/images/match-empty.png"
+    description: "Minimalist warm illustration of two coffee cups resting on a table, earthy tones, lots of negative space, vector art style"
+    aspect_ratio: "1:1"
+  - path: "artifacts/workmate/public/images/avatar-placeholder.png"
+    description: "Abstract soft gradient avatar placeholder in matcha green and latte brown colors, very subtle"
+    aspect_ratio: "1:1"
+
+notes:
+  - "Assumes standard setup, generated hooks from @workspace/api-client-react"
+  - "Uses hardcoded 'user-demo-1' for sender IDs since no auth is implemented yet"
