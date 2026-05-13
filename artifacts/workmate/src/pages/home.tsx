@@ -1,7 +1,20 @@
-import { useMatch } from "@/hooks/use-match";
 import { format } from "date-fns";
-import { Loader2 } from "lucide-react";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
+
+const DEMO_MATCH = {
+  id: "match-demo-1",
+  sessionDate: "2026-05-16T14:00:00.000Z",
+  sessionTimeSlot: "10:00 AM – 4:00 PM",
+  status: "confirmed" as const,
+  chatEnabled: true,
+  matchedUserProfile: {
+    name: "Alex Chen",
+    photoUrl: null as null,
+    workingStyle: "light_chat" as const,
+    workIntents: ["Design work", "Planning"],
+    preferredNeighborhoods: ["Brooklyn", "Lower East Side"],
+  },
+};
 
 const S = {
   bg: "#EEEAE3",
@@ -29,53 +42,7 @@ const intentLabels: Record<string, string> = {
 
 export default function Home() {
   const base = import.meta.env.BASE_URL;
-  const { data: match, isLoading, isError } = useMatch();
-
-  if (isLoading) {
-    return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-        <Loader2 style={{ width: 28, height: 28, color: S.fg, animation: "spin 1s linear infinite" }} />
-      </div>
-    );
-  }
-
-  if (isError || !match) {
-    return (
-      <div style={{ padding: "48px 28px", textAlign: "center" }}>
-        <div
-          style={{
-            width: "64px",
-            height: "64px",
-            borderRadius: "50%",
-            background: S.surface,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 28px",
-          }}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={S.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-        </div>
-        <p
-          style={{
-            fontSize: "clamp(1.6rem, 4vw, 2rem)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            fontFamily: S.fontDisplay,
-            margin: "0 0 12px",
-          }}
-        >
-          Looking for your match
-        </p>
-        <p style={{ fontSize: "14px", color: S.muted, lineHeight: 1.6, maxWidth: "260px", margin: "0 auto" }}>
-          Matches are revealed every Saturday at 6 pm. Make sure your profile is up to date.
-        </p>
-      </div>
-    );
-  }
-
+  const match = DEMO_MATCH;
   const sessionDate = new Date(match.sessionDate);
   const p = match.matchedUserProfile;
 

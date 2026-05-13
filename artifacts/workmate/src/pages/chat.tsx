@@ -1,8 +1,30 @@
 import { useState, useEffect, useRef } from "react";
-import { useMatch } from "@/hooks/use-match";
-import { useChat, useCafes, useSendMessage } from "@/hooks/use-chat";
-import { useProfile } from "@/hooks/use-profile";
 import { format } from "date-fns";
+
+const DEMO_MATCH = {
+  id: "match-demo-1",
+  sessionTimeSlot: "10:00 AM – 4:00 PM",
+  status: "confirmed" as const,
+  chatEnabled: true,
+  matchedUserProfile: { name: "Alex Chen", photoUrl: null as null },
+};
+
+const DEMO_CAFES = [
+  { id: "c1", name: "Verve Coffee Roasters", neighborhood: "SoHo", address: "72 Spring St", distance: "0.3 mi", vibe: "Quiet, good wifi" },
+  { id: "c2", name: "Blue Bottle Coffee", neighborhood: "Nolita", address: "160 Berry St", distance: "0.6 mi", vibe: "Minimal, focused" },
+  { id: "c3", name: "Cha Cha Matcha", neighborhood: "West Village", address: "373 Bleecker St", distance: "0.8 mi", vibe: "Cozy, matcha bar" },
+];
+
+const BASE_TIME = new Date("2026-05-10T14:00:00.000Z");
+const t = (mins: number) => new Date(BASE_TIME.getTime() + mins * 60000).toISOString();
+
+const INITIAL_MESSAGES = [
+  { id: "m1", senderId: "user-demo-match", senderName: "Alex Chen", content: "Hey! Saw we got matched this week 👋", sentAt: t(0) },
+  { id: "m2", senderId: "user-demo-1",     senderName: "You",        content: "Hi! Saturday 10am works great for me.", sentAt: t(3) },
+  { id: "m3", senderId: "user-demo-match", senderName: "Alex Chen", content: "Same. Should we pick a café? Open to SoHo or Nolita.", sentAt: t(5) },
+  { id: "m4", senderId: "user-demo-1",     senderName: "You",        content: "Verve on Spring St looks perfect — quiet enough for deep work.", sentAt: t(8) },
+  { id: "m5", senderId: "user-demo-match", senderName: "Alex Chen", content: "Love it. See you there!", sentAt: t(10) },
+];
 
 interface CafeSuggestion {
   id: string;
@@ -33,11 +55,9 @@ const QUICK_REPLIES = [
 
 export default function Chat() {
   const base = import.meta.env.BASE_URL;
-  const { data: match, isLoading: matchLoading } = useMatch();
-  const { data: profile } = useProfile();
-  const { data: messages = [] } = useChat(match?.id);
-  const { data: cafes = [] } = useCafes(match?.id);
-  const sendMessage = useSendMessage(match?.id || "");
+  const match = DEMO_MATCH;
+  const cafes = DEMO_CAFES;
+  const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -45,48 +65,12 @@ export default function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  if (matchLoading) return null;
-
-  if (!match || !match.chatEnabled || match.status !== "confirmed") {
-    return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", padding: "40px 32px", textAlign: "center" }}>
-        <div
-          style={{
-            width: "56px",
-            height: "56px",
-            borderRadius: "50%",
-            background: S.surface,
-            border: `1px solid ${S.border}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: "24px",
-          }}
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={S.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-        </div>
-        <p style={{ fontSize: "20px", fontWeight: 700, letterSpacing: "-0.01em", fontFamily: S.fontDisplay, margin: "0 0 10px" }}>
-          Chat unavailable
-        </p>
-        <p style={{ fontSize: "14px", color: S.muted, lineHeight: 1.6, maxWidth: "260px", margin: 0 }}>
-          Coordination chat unlocks when your match is confirmed and the weekly window is active.
-        </p>
-      </div>
-    );
-  }
-
   const handleSend = (content: string) => {
     if (!content.trim()) return;
-    sendMessage.mutate({
-      matchId: match.id,
-      data: {
-        content,
-        senderId: profile?.userId || "user-demo-1",
-        senderName: profile?.name || "You",
-      },
-    });
+    setMessages((prev) => [
+      ...prev,
+      { id: `m${Date.now()}`, senderId: "user-demo-1", senderName: "You", content, sentAt: new Date().toISOString() },
+    ]);
     setInput("");
   };
 
@@ -94,7 +78,7 @@ export default function Chat() {
     handleSend(`Want to meet at ${cafe.name} in ${cafe.neighborhood}?`);
   };
 
-  const myId = profile?.userId || "user-demo-1";
+  const myId = "user-demo-1";
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "calc(100dvh - 52px - 68px)", background: S.bg }}>
